@@ -16,7 +16,7 @@ def jsonParseAux(jsonAux) {
     def result = jsonSlurper.parseText(jsonAux)
 }
 def getTags (container){
-    def result = ("curl -s ${containerFrontEnd}").execute().getText()
+    def result = ("curl -s ${container}").execute().getText()
     def object = jsonParseAux(result)
     def results = object.results
     def list = []
