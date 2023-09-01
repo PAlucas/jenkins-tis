@@ -121,7 +121,7 @@ pipeline {
                 script {
                     try {
 
-                        sh("docker rmi $(docker images -q) -f")
+                        sh("docker system prune -a -f")
 
                     } catch (err) {
                         echo err.getMessage()
