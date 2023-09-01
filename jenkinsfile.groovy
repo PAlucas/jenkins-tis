@@ -3,62 +3,37 @@ import org.eclipse.jgit.api.ListTagCommand
 import org.eclipse.jgit.lib.Ref
 import groovy.json.JsonSlurperClassic
 
-class Config {
-    def artefato
-    def project
-    def branch
-    def url
-}
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonSlurper
 
-def repoUrl = 'https://github.com/PAlucas/trab1.git'
-
-def gettags (){
-    def result = ("git ls-remote --tags https://github.com/PAlucas/trab1.git").execute().getText().replaceAll('refs/tags/', '')
-    def list = result.split()
-    def novolist = []
-    list.each{value ->
-        def primeiraLetra = value.split('');
-        if(primeiraLetra[0] == 'v'){
-            novolist << value
-        }
-    }
-    return novolist
-}
+def repoUrl = 'https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2023-2-ti3-6654100-posto-ipiranga.git'
+def containerFrontEnd = "https://registry.hub.docker.com/v2/repositories/library/nginx/tags"
+def containerBackEnd = "https://registry.hub.docker.com/v2/repositories/library/nginx/tags"
 
 
-def select(gerar_artefato, artefato, branch, url, selected) {
-    if (gerar_artefato) {
-        item = new Config()
-        item.artefato = artefato
-        item.branch = branch
-        item.url = url
-
-        selected.add(item)
-    }
-}
 def jsonParseAux(jsonAux) {
-    new groovy.json.JsonSlurperClassic().parseText(json)
+    def jsonSlurper = new JsonSlurper()
+    def result = jsonSlurper.parseText(jsonAux)
 }
-
-
-@NonCPS
-def jsonParse(def json) {
-    new groovy.json.JsonSlurperClassic().parseText(json)
+def getTags (container){
+    def result = ("curl -s ${containerFrontEnd}").execute().getText()
+    def object = jsonParseAux(result)
+    def results = object.results
+    def list = []
+    results.each{value ->
+        list << value.name
+    }
+    return list
 }
+def list = gettags (containerFrontEnd)
 
 pipeline {
     agent any
-    environment {
-        selected = '[]'
-        imageOk = '[]'
-        build_ok = '[]'
-        build_error = '[]'
-    }
     parameters {
         booleanParam(name: 'deploy', defaultValue: true, description: 'Realizar o deploy no ambiente de qualidade')
-        choice(name: 'front-end', choices: gettags (), description: '')
+        choice(name: 'front-end', choices: gettags (containerFrontEnd), description: '')
         booleanParam(name: 'gerar_front', defaultValue: false, description: '')
-        choice(name: 'back-end', choices: gettags (), description: '')
+        choice(name: 'back-end', choices: gettags (containerBackEnd), description: '')
         booleanParam(name: 'gerar_back', defaultValue: false, description: '')
     }
     options {
