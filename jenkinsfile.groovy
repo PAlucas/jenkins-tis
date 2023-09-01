@@ -82,14 +82,51 @@ pipeline {
                 }
             }
         }
-        stage('Erase') {
+        stage('Erase Container') {
             steps {
                 script {
                     try {
-                        sh("docker rm react-app -f")
-
-                        sh("docker rm back-end-posto -f")
+                        if (params.gerar_front) {
+                            sh("docker rm react-app -f")
+                        }
                         
+                        if (params.gerar_back) {
+                            sh("docker rm back-end-posto -f")
+                        }
+                    } catch (err) {
+                        echo err.getMessage()
+                    }
+                }
+            }
+        }
+        stage('Run Container') {
+            steps {
+                script {
+                    try {
+                        if (params.gerar_front) {
+                            sh("docker rm react-app -f")
+                        }
+                        
+                        if (params.gerar_back) {
+                            sh("docker rm back-end-posto -f")
+                        }
+                    } catch (err) {
+                        echo err.getMessage()
+                    }
+                }
+            }
+        }
+        stage('Erase Image') {
+            steps {
+                script {
+                    try {
+                        if (params.gerar_front) {
+                            sh("docker rm react-app -f")
+                        }
+                        
+                        if (params.gerar_back) {
+                            sh("docker rm back-end-posto -f")
+                        }
                     } catch (err) {
                         echo err.getMessage()
                     }
