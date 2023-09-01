@@ -87,11 +87,11 @@ pipeline {
                 script {
                     try {
                         if (params.gerar_front) {
-                            sh("docker rm react-app -f")
+                            sh("docker rm postoapp -f")
                         }
                         
                         if (params.gerar_back) {
-                            sh("docker rm back-end-posto -f")
+                            sh("docker rm posto-ipiranga -f")
                         }
                     } catch (err) {
                         echo err.getMessage()
@@ -104,11 +104,11 @@ pipeline {
                 script {
                     try {
                         if (params.gerar_front) {
-                            sh("docker rm react-app -f")
+                            sh("docker run -d -p 3000:3000 --name postoapp --network=tis-3 lucaslotti/postoapp:${backEndChoice}")
                         }
                         
                         if (params.gerar_back) {
-                            sh("docker rm back-end-posto -f")
+                            sh("docker run -d -p 7000:7000 --name posto-ipiranga --network=tis-3 -e DB_URL=jdbc:postgresql://some-postgres:5432/ -e PORT=7000 lucaslotti/posto-ipiranga:${backEndChoice}")
                         }
                     } catch (err) {
                         echo err.getMessage()
@@ -120,13 +120,9 @@ pipeline {
             steps {
                 script {
                     try {
-                        if (params.gerar_front) {
-                            sh("docker rm react-app -f")
-                        }
-                        
-                        if (params.gerar_back) {
-                            sh("docker rm back-end-posto -f")
-                        }
+
+                        sh("docker rmi $(docker images -q) -f")
+
                     } catch (err) {
                         echo err.getMessage()
                     }
