@@ -7,8 +7,8 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonSlurper
 
 def repoUrl = 'https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2023-2-ti3-6654100-posto-ipiranga.git'
-def containerFrontEnd = "https://registry.hub.docker.com/v2/repositories/library/nginx/tags"
-def containerBackEnd = "https://registry.hub.docker.com/v2/repositories/library/nginx/tags"
+def containerFrontEnd = "https://hub.docker.com/v2/repositories/lucaslotti/postoapp/"
+def containerBackEnd = "https://hub.docker.com/v2/repositories/lucaslotti/posto-ipiranga"
 
 
 def jsonParseAux(jsonAux) {
