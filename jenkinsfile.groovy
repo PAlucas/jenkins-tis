@@ -1,14 +1,9 @@
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.ListTagCommand
-import org.eclipse.jgit.lib.Ref
-import groovy.json.JsonSlurperClassic
-
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonSlurper
 
 def repoUrl = 'https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2023-2-ti3-6654100-posto-ipiranga.git'
-def containerFrontEnd = "https://registry.hub.docker.com/v2/repositories/lucaslotti/postoapp/tags"
-def containerBackEnd = "https://registry.hub.docker.com/v2/repositories/lucaslotti/posto-ipiranga/tags"
+def containerFrontEnd = "https://registry.hub.docker.com/v2/repositories/library/nginx/tags"
+def containerBackEnd = "https://registry.hub.docker.com/v2/repositories/library/nginx/tags"
 
 
 def jsonParseAux(jsonAux) {
@@ -16,7 +11,7 @@ def jsonParseAux(jsonAux) {
     def result = jsonSlurper.parseText(jsonAux)
 }
 def getTags (container){
-    def result = ("curl -s ${container}").execute().getText()
+    def result = ("curl -s ${containerFrontEnd}").execute().getText()
     def object = jsonParseAux(result)
     def results = object.results
     def list = []
@@ -28,10 +23,17 @@ def getTags (container){
 
 pipeline {
     agent any
+    environment {
+        selected = '[]'
+        imageOk = '[]'
+        build_ok = '[]'
+        build_error = '[]'
+    }
     parameters {
-        choice(name: 'front-end', choices: getTags (containerFrontEnd), description: '')
+        booleanParam(name: 'deploy', defaultValue: true, description: 'Realizar o deploy no ambiente de qualidade')
+        choice(name: 'front-end', choices: gettags (containerFrontEnd), description: '')
         booleanParam(name: 'gerar_front', defaultValue: false, description: '')
-        choice(name: 'back-end', choices: getTags (containerBackEnd), description: '')
+        choice(name: 'back-end', choices: gettags (containerBackEnd), description: '')
         booleanParam(name: 'gerar_back', defaultValue: false, description: '')
     }
     options {
@@ -52,19 +54,34 @@ pipeline {
                         if (params.gerar_back) {
                             echo "Back-end escolhido: ${backEndChoice}"
                         }
-                        // Parse tags from the output
-                        println params.gerar_front
+
                     } catch (err) {
                         echo err.getMessage()
                     }
                 }
             }
         }
-        stage('Build') {
+        stage('Pull') {
             steps {
                 script {
                     try {
-                        sh("docker ps")
+                        sh("docker pull lucaslotti/posto-ipiranga:${backEndChoice}")
+
+                        sh("docker pull lucaslotti/postoapp:${backEndChoice}")
+                        
+                    } catch (err) {
+                        echo err.getMessage()
+                    }
+                }
+            }
+        }
+        stage('Erase') {
+            steps {
+                script {
+                    try {
+                        sh("docker rm react-app -f")
+
+                        sh("docker rm back-end-posto -f")
                         
                     } catch (err) {
                         echo err.getMessage()
