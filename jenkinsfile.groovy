@@ -85,6 +85,8 @@ pipeline {
         stage('Erase Container') {
             steps {
                 script {
+                    def frontEndChoice = params['front-end']
+                    def backEndChoice = params['back-end']
                     try {
                         if (params.gerar_front) {
                             sh("docker rm postoapp -f")
@@ -103,6 +105,8 @@ pipeline {
             steps {
                 script {
                     try {
+                        def frontEndChoice = params['front-end']
+                        def backEndChoice = params['back-end']
                         if (params.gerar_front) {
                             sh("docker run -d -p 3000:3000 --name postoapp --network=tis-3 lucaslotti/postoapp:${backEndChoice}")
                         }
