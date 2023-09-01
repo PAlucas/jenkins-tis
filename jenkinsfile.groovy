@@ -31,9 +31,9 @@ pipeline {
     agent any
     parameters {
         booleanParam(name: 'deploy', defaultValue: true, description: 'Realizar o deploy no ambiente de qualidade')
-        choice(name: 'front-end', choices: gettags (containerFrontEnd), description: '')
+        choice(name: 'front-end', choices: getTags (containerFrontEnd), description: '')
         booleanParam(name: 'gerar_front', defaultValue: false, description: '')
-        choice(name: 'back-end', choices: gettags (containerBackEnd), description: '')
+        choice(name: 'back-end', choices: getTags (containerBackEnd), description: '')
         booleanParam(name: 'gerar_back', defaultValue: false, description: '')
     }
     options {
