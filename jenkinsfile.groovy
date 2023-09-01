@@ -25,7 +25,6 @@ def getTags (container){
     }
     return list
 }
-def list = gettags (containerFrontEnd)
 
 pipeline {
     agent any
