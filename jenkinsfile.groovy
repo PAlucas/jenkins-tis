@@ -30,11 +30,7 @@ pipeline {
         build_error = '[]'
     }
     parameters {
-        booleanParam(name: 'deploy', defaultValue: true, description: 'Realizar o deploy no ambiente de qualidade')
-        choice(name: 'front-end', choices: getTags (containerFrontEnd), description: '')
-        booleanParam(name: 'gerar_front', defaultValue: false, description: '')
         choice(name: 'back-end', choices: getTags (containerBackEnd), description: '')
-        booleanParam(name: 'gerar_back', defaultValue: false, description: '')
     }
     options {
         timestamps()
@@ -44,12 +40,8 @@ pipeline {
             steps {
                 script {
                     try {
-                        def frontEndChoice = params['front-end']
                         def backEndChoice = params['back-end']
                         
-                        if (params.gerar_front) {
-                            echo "Front-end escolhido: ${frontEndChoice}"
-                        }
                         
                         if (params.gerar_back) {
                             echo "Back-end escolhido: ${backEndChoice}"
@@ -65,15 +57,11 @@ pipeline {
             steps {
                 script {
                     try {
-                        def frontEndChoice = params['front-end']
                         def backEndChoice = params['back-end']
                         
-                        if (params.gerar_front) {
-                            sh("docker pull lucaslotti/posto-ipiranga:${backEndChoice}")
-                        }
                         
                         if (params.gerar_back) {
-                            sh("docker pull lucaslotti/postoapp:${backEndChoice}")
+                            sh("gcloud cloud-shell ssh --authorize-session")
                         }
                           
                     } catch (err) {
@@ -88,45 +76,10 @@ pipeline {
                     def frontEndChoice = params['front-end']
                     def backEndChoice = params['back-end']
                     try {
-                        if (params.gerar_front) {
-                            sh("docker rm postoapp -f")
-                        }
                         
                         if (params.gerar_back) {
-                            sh("docker rm posto-ipiranga -f")
+                            sh("docker image ls")
                         }
-                    } catch (err) {
-                        echo err.getMessage()
-                    }
-                }
-            }
-        }
-        stage('Run Container') {
-            steps {
-                script {
-                    try {
-                        def frontEndChoice = params['front-end']
-                        def backEndChoice = params['back-end']
-                        if (params.gerar_front) {
-                            sh("docker run -d -p 3000:3000 --name postoapp --network=tis-3 lucaslotti/postoapp:${backEndChoice}")
-                        }
-                        
-                        if (params.gerar_back) {
-                            sh("docker run -d -p 7000:7000 --name posto-ipiranga --network=tis-3 -e DB_URL=jdbc:postgresql://some-postgres:5432/ -e PORT=7000 lucaslotti/posto-ipiranga:${backEndChoice}")
-                        }
-                    } catch (err) {
-                        echo err.getMessage()
-                    }
-                }
-            }
-        }
-        stage('Erase Image') {
-            steps {
-                script {
-                    try {
-
-                        sh("docker system prune -a -f")
-
                     } catch (err) {
                         echo err.getMessage()
                     }
