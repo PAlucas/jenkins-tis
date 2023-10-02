@@ -43,9 +43,7 @@ pipeline {
                         def backEndChoice = params['back-end']
                         
                         
-                        if (params.gerar_back) {
                             echo "Back-end escolhido: ${backEndChoice}"
-                        }
 
                     } catch (err) {
                         echo err.getMessage()
@@ -60,9 +58,7 @@ pipeline {
                         def backEndChoice = params['back-end']
                         
                         
-                        if (params.gerar_back) {
                             sh("gcloud cloud-shell ssh --authorize-session")
-                        }
                           
                     } catch (err) {
                         echo err.getMessage()
@@ -73,13 +69,10 @@ pipeline {
         stage('Erase Container') {
             steps {
                 script {
-                    def frontEndChoice = params['front-end']
                     def backEndChoice = params['back-end']
                     try {
                         
-                        if (params.gerar_back) {
                             sh("docker image ls")
-                        }
                     } catch (err) {
                         echo err.getMessage()
                     }
