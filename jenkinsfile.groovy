@@ -22,7 +22,9 @@ def getTags (container){
 }
 
 pipeline {
-    agent any
+    agent {
+        docker {image 'servidor-ubuntu'}
+    }
     environment {
         selected = '[]'
         imageOk = '[]'
@@ -45,34 +47,6 @@ pipeline {
                         
                             echo "Back-end escolhido: ${backEndChoice}"
 
-                    } catch (err) {
-                        echo err.getMessage()
-                    }
-                }
-            }
-        }
-        stage('Pull') {
-            steps {
-                script {
-                    try {
-                        def backEndChoice = params['back-end']
-                        
-                        
-                            sh("gcloud cloud-shell ssh --authorize-session")
-                          
-                    } catch (err) {
-                        echo err.getMessage()
-                    }
-                }
-            }
-        }
-        stage('Erase Container') {
-            steps {
-                script {
-                    def backEndChoice = params['back-end']
-                    try {
-                        
-                            sh("docker image ls")
                     } catch (err) {
                         echo err.getMessage()
                     }
