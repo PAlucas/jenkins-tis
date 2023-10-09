@@ -23,7 +23,7 @@ def getTags (container){
 
 pipeline {
     agent {
-        docker {image 'servidor-ubuntu'}
+        dockerContainer {image 'servidor-ubuntu'}
     }
     environment {
         selected = '[]'
