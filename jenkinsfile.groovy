@@ -51,7 +51,7 @@ pipeline {
                     try {
                         def backEndChoice = params['back-end']
                     
-                    
+                            readFile()
                             echo "Back-end escolhido: ${backEndChoice}"
                             sh "ls"
 
