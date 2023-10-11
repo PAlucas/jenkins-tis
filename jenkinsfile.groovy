@@ -21,10 +21,14 @@ def getTags (container){
 }
 
 def readFile(){
-    def file = new File("./jenkins-tis/jenkins.json").newInputStream()
+    def file = new File("./jenkins.json").newInputStream()
 }
 
-readFile()
+new FileWriter("./jenkins-tis/example.txt", true).with {
+	write("Hello world\n")
+	flush()
+}
+
 
 
 pipeline {
