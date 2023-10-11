@@ -2,7 +2,6 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonSlurper
 
 def repoUrl = 'https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2023-2-ti3-6654100-posto-ipiranga.git'
-def containerFrontEnd = "https://registry.hub.docker.com/v2/repositories/lucaslotti/postoapp/tags"
 def containerBackEnd = "https://registry.hub.docker.com/v2/repositories/lucaslotti/posto-ipiranga/tags"
 
 
@@ -20,7 +19,9 @@ def getTags (container){
     }
     return list
 }
+def file = new File("jenkins-tis/jenkins.json").newInputStream()
 
+println "oi"
 pipeline {
     agent {
         label 'ubuntu-2004'
@@ -43,8 +44,8 @@ pipeline {
                 script {
                     try {
                         def backEndChoice = params['back-end']
-                        
-                        
+                    
+                    
                             echo "Back-end escolhido: ${backEndChoice}"
 
                     } catch (err) {
