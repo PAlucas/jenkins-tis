@@ -24,7 +24,7 @@ def readFile(){
     def file = new File("./jenkins-tis/jenkins.json").collect{it}
 }
 
-readFile()
+
 
 
 
@@ -53,6 +53,7 @@ pipeline {
                     
                     
                             echo "Back-end escolhido: ${backEndChoice}"
+                            sh "ls"
 
                     } catch (err) {
                         echo err.getMessage()
