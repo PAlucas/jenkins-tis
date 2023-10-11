@@ -19,40 +19,40 @@ def getTags (container){
     }
     return list
 }
-def file = new File("jenkins-tis/jenkins.json").newInputStream()
+def file = new File("jenkins.json").newInputStream()
 
-println "oi"
-pipeline {
-    agent {
-        label 'ubuntu-2004'
-    }
-    environment {
-        selected = '[]'
-        imageOk = '[]'
-        build_ok = '[]'
-        build_error = '[]'
-    }
-    parameters {
-        choice(name: 'back-end', choices: getTags (containerBackEnd), description: '')
-    }
-    options {
-        timestamps()
-    }
-    stages {
-        stage('Info') {
-            steps {
-                script {
-                    try {
-                        def backEndChoice = params['back-end']
+
+// pipeline {
+//     agent {
+//         label 'ubuntu-2004'
+//     }
+//     environment {
+//         selected = '[]'
+//         imageOk = '[]'
+//         build_ok = '[]'
+//         build_error = '[]'
+//     }
+//     parameters {
+//         choice(name: 'back-end', choices: getTags (containerBackEnd), description: '')
+//     }
+//     options {
+//         timestamps()
+//     }
+//     stages {
+//         stage('Info') {
+//             steps {
+//                 script {
+//                     try {
+//                         def backEndChoice = params['back-end']
                     
                     
-                            echo "Back-end escolhido: ${backEndChoice}"
+//                             echo "Back-end escolhido: ${backEndChoice}"
 
-                    } catch (err) {
-                        echo err.getMessage()
-                    }
-                }
-            }
-        }
-    }
-}
+//                     } catch (err) {
+//                         echo err.getMessage()
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
