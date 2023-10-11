@@ -21,7 +21,7 @@ def getTags (container){
 }
 
 def readFile(){
-    def file = new File("jenkins.json").collect{it}
+    def file = new File("/json/jenkins.json").collect{it}
 }
 
 
