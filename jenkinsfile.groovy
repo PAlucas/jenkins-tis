@@ -46,6 +46,7 @@ pipeline {
                             def fileJson = readFile();
                             println fileJson
                             echo "Back-end escolhido: ${backEndChoice}"
+                            sh "cd json"
                             sh "ls"
 
                     } catch (err) {
