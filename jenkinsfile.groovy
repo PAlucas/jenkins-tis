@@ -52,5 +52,20 @@ pipeline {
                 }
             }
         }
+        stage('Build') {
+            steps {
+                script {
+                    try {
+                        def backEndChoice = params['back-end']
+                    
+                            echo "Vendo containers disponiveis"
+                            sh "gcloud cloud-shell ssh --command=docker image ls"
+
+                    } catch (err) {
+                        echo err.getMessage()
+                    }
+                }
+            }
+        }
     }
 }
