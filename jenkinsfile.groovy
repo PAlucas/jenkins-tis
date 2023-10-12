@@ -45,6 +45,7 @@ pipeline {
                     
                             echo "Back-end escolhido: ${backEndChoice}"
                             sh "cd json"
+                            sh "gcloud auth activate-service-account --key-file=jenkins-sa.json"
 
                     } catch (err) {
                         echo err.getMessage()
