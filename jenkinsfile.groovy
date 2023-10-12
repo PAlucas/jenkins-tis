@@ -47,7 +47,6 @@ pipeline {
                             println fileJson
                             echo "Back-end escolhido: ${backEndChoice}"
                             sh "cd json"
-                            sh "ls"
 
                     } catch (err) {
                         echo err.getMessage()
