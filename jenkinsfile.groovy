@@ -43,8 +43,6 @@ pipeline {
                     try {
                         def backEndChoice = params['back-end']
                     
-                            def fileJson = readFile();
-                            println fileJson
                             echo "Back-end escolhido: ${backEndChoice}"
                             sh "cd json"
 
