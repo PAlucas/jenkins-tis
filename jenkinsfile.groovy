@@ -44,7 +44,7 @@ pipeline {
                         def backEndChoice = params['back-end']
                     
                             echo "Back-end escolhido: ${backEndChoice}"
-                            sh "cd json | gcloud auth activate-service-account --key-file=jenkins.json"
+                            sh "cd json | ls"
 
                     } catch (err) {
                         echo err.getMessage()
