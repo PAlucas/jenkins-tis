@@ -59,7 +59,7 @@ pipeline {
                         def backEndChoice = params['back-end']
                     
                             echo "Vendo containers disponiveis"
-                            sh "gcloud cloud-shell ssh --command=docker image ls"
+                            sh "gcloud cloud-shell ssh --command='docker image ls'"
 
                     } catch (err) {
                         echo err.getMessage()
