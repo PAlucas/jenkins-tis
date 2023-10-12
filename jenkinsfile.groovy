@@ -20,14 +20,6 @@ def getTags (container){
     return list
 }
 
-def readFile(){
-    def file = new File("/json/jenkins.json").collect{it}
-}
-
-
-
-
-
 pipeline {
     agent {
         label 'ubuntu-2004'
